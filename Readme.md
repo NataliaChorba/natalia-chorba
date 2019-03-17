@@ -36,7 +36,7 @@ Validations for each endpoint:
 * Fields values are not empty (unless it’s allowed in spec)
 * Negative checks for request parameters values: wrong type, empty, null, too small/large numbers
 
-##Proposed list of testcases for Products and Categories endpoints (some of them are autometed):
+## Proposed list of testcases for Products and Categories endpoints (some of them are autometed):
 
 Products:
 * Get products: response body contains products
