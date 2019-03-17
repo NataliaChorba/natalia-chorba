@@ -10,15 +10,16 @@ https://github.com/BestBuy/api-playground
 ```
 ## Tests could be run from Postman Runner or using Newman CLI
 
-$ newman run best_buy_postman_tests.json -e local.postman_environment.json
 ```
-./
+$ newman run best_buy_postman_tests.json -e local.postman_environment.json
 ```
 Installation
 
 The easiest way to install Newman is using NPM. If you have Node.js installed, it is most likely that you have NPM installed as well.
 
+```
 $ npm install -g newman
+```
 
 ### Collection was imported from Swagger.
 
