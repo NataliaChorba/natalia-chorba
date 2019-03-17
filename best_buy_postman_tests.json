@@ -1,0 +1,895 @@
+{
+	"info": {
+		"_postman_id": "8a422888-a4cf-4cb2-b6bb-5eb7ba3071fd",
+		"name": "Best Buy API Playground",
+		"description": "A sample dataset and API for you to experiment with.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "GET (positive cases)",
+					"item": [
+						{
+							"name": "List of products",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a3cc9bfa-0fee-4858-b83b-1b6cf0ed5df2",
+										"exec": [
+											"pm.test(\"Response body contains data\", function () {",
+											"    pm.expect(pm.response.json().data.length).to.be.above(0)",
+											"    ;",
+											"});",
+											"",
+											"pm.test(\"Total products number > 0\", function () {",
+											"    pm.expect(pm.response.json().total).to.be.above(0)",
+											"    ;",
+											"});",
+											"",
+											"pm.test(\"Default limit parameter value is correct\", function () {",
+											"        pm.expect(parseInt(pm.environment.get(\"default_limit\"))).to.equal(",
+											"        pm.response.json().limit",
+											"    );",
+											"});",
+											"",
+											"pm.test(\"Body length is equal to default limit parameter value\", function () {",
+											"    pm.expect(parseInt(pm.environment.get(\"default_limit\"))).to.equal(",
+											"        pm.response.json().data.length",
+											"    );",
+											"});",
+											"",
+											"pm.test(\"Default skip parameter value is correct\", function () {",
+											"        pm.expect(parseInt(pm.environment.get(\"default_skip\"))).to.equal(",
+											"        pm.response.json().skip",
+											"    );",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products"
+									]
+								},
+								"description": "Returns all products that match the given filter criteria. If no filters are included, defaults to returning a paginated list of all products."
+							},
+							"response": []
+						},
+						{
+							"name": "Pagination",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d8fb7a76-cd17-4cfa-9e56-abd82b249798",
+										"exec": [
+											"pm.test(\"Value of limit parameter in response is equal to limit parameter in request\", function () {",
+											"    pm.expect(parseInt(pm.environment.get(\"limit\"))).to.equal(",
+											"        pm.response.json().limit",
+											"    );",
+											"});",
+											"",
+											"pm.test(\"Value of skip parameter in responce is equal to skip parameter in request\", function () {",
+											"    pm.expect(parseInt(pm.environment.get(\"skip\"))).to.equal(",
+											"        pm.response.json().skip",
+											"    );",
+											"});",
+											"",
+											"pm.test(\"Body length is equal to value of limit parameter\", function () {",
+											"    pm.expect(parseInt(pm.environment.get(\"limit\"))).to.equal(",
+											"        pm.response.json().data.length",
+											"    );",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products?$limit=15&$skip=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "$limit",
+											"value": "15"
+										},
+										{
+											"key": "$skip",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Checking limit and skip parameters"
+							},
+							"response": []
+						},
+						{
+							"name": "Get product by id ",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ad4bdafd-cdab-4645-bb9e-fbaf585d713f",
+										"exec": [
+											"pm.test(\"Value of id parameter in response is equal to id parameter in request\", function () {",
+											"    pm.expect(parseInt(pm.environment.get(\"sku\"))).to.equal(",
+											"        pm.response.json().id",
+											"    );",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "9132294"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sorting by price",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "60623d02-36d7-4576-88a3-c631baf275c7",
+										"exec": [
+											"pm.test(\"Sorted results are not empty\", function () {",
+											"    pm.expect(pm.response.json().data.length).to.be.above(0)",
+											"",
+											"});",
+											"",
+											"pm.test(\"Sorting by price\", function () {",
+											"    pm.expect(pm.response.json().data.length).to.be.above(0)",
+											"    var _ = require('lodash')",
+											"    var data = pm.response.json().data; ",
+											"    var expectedSortedOrder = _.orderBy(data, ['price'], ['asc']);",
+											"    pm.expect(expectedSortedOrder.id).to.equal(data.id);",
+											"",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:3030/products?$sort[price]=1",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "$sort[price]",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show only name and price",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "90e8e1ba-3ad0-4cc5-94fb-600af798f046",
+										"exec": [
+											"pm.test(\"Show only name and price\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    var expectedObject = {",
+											"        \"name\": \"Yamaha - P32D Pianica - Brown/White\",",
+											"        \"price\": 59.99,",
+											"        \"id\": 9132294",
+											"    }",
+											"    pm.expect(expectedObject).to.include(jsonData);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:3030/products/:id?$select[]=name&$select[]=price",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										":id"
+									],
+									"query": [
+										{
+											"key": "$select[]",
+											"value": "name"
+										},
+										{
+											"key": "$select[]",
+											"value": "price"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{sku}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TVs with free shipping and price between $500 and $800",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "885203d9-d669-4822-98f3-807f0cc8df6f",
+										"exec": [
+											"pm.test(\"Total products number > 0\", function () {",
+											"    pm.expect(pm.response.json().total).to.be.above(0)",
+											"    ;",
+											"});",
+											"",
+											"pm.test(\"Price is > 500\", function () {",
+											"    var data = pm.response.json().data; ",
+											"    data.forEach(function(product){",
+											"    pm.expect(product.price).to.be.above(500)",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Price is < 800\", function () {",
+											"    var data = pm.response.json().data; ",
+											"    data.forEach(function(product){",
+											"    pm.expect(product.price).to.be.below(800)",
+											"    });",
+											"});",
+											"",
+											" "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:3030/products?category.name=TVs&price[$gt]=500&price[$lt]=800&shipping[$eq]=0",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "category.name",
+											"value": "TVs"
+										},
+										{
+											"key": "price[$gt]",
+											"value": "500"
+										},
+										{
+											"key": "price[$lt]",
+											"value": "800"
+										},
+										{
+											"key": "shipping[$eq]",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a4081700-d6ff-4fa9-ba1e-c59fc30a7bd6",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bdf295f-4252-4263-a19c-ca39c3175ea3",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response should be okay to process\", function () { ",
+									"    pm.response.to.be.ok; ",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.not.have.jsonBody(\"error\"); ",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});"
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET (negative cases)",
+					"item": [
+						{
+							"name": "Invalid parameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4c2042c0-a1cf-4d02-874e-e69af60a721d",
+										"exec": [
+											"pm.test(\"Value of limit parameter is not a number\", function () {",
+											"    pm.expect(pm.response.code).to.equal(500)",
+											"    ;",
+											"});",
+											"",
+											"//here should be added other checks for invalid parameters values: negative, empty, not decimal, too large"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products?$limit=asdasd&$skip=asdasd",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "$limit",
+											"value": "asdasd"
+										},
+										{
+											"key": "$skip",
+											"value": "asdasd"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8657d737-802a-44fc-bff2-be5ee2c2434e",
+										"exec": [
+											"pm.test(\"Invalid product id\", function () {",
+											"    pm.expect(pm.response.code).to.equal(404)",
+											"    ;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "asdasd"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Not existing id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1ad39a2c-be03-472f-ba73-1e952f8d0e8b",
+										"exec": [
+											"pm.test(\"Invalid product id\", function () {",
+											"    pm.expect(pm.response.code).to.equal(404)",
+											"    ;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1111111"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Create (positive cases)",
+					"item": [
+						{
+							"name": "Create product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "30d24787-2fba-46d6-81d1-5a91907bb522",
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+											"    var jsonData = JSON.parse(responseBody);",
+											"    postman.setEnvironmentVariable(\"newid\", jsonData.id);",
+											"});",
+											"",
+											"pm.test(\"Response body contains products\", function () {",
+											"    pm.expect(pm.response.json().id).to.be.above(0)",
+											"    ;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Test product\",\n\t\"type\": \"Test type\",\n\t\"upc\": \"12345676\",\n\t\"price\": 99.99,\n\t\"description\": \"This is a placeholder request for creating a new product.\",\n\t\"model\": \"NP12345\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										""
+									]
+								},
+								"description": "Creates a new product"
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2e9cd3c0-ca9c-4585-bc72-b4f815f95da2",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "47b658ce-a698-48ec-99c1-39caa9832c44",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c9bcb3f1-f9e4-4ab5-8ddc-7af4c11404ab",
+										"exec": [
+											"pm.test(\"Response body contains products\", function () {",
+											"    pm.expect(pm.response.json().id).to.be.above(0)",
+											"    ;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3030/products/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{newid}}"
+										}
+									]
+								},
+								"description": "Deletes a single product based on the ID supplied"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Create (negative cases)",
+					"item": [
+						{
+							"name": "Invalid id",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": asdasd,\n    \"name\": \"Test product\",\n    \"type\": \"Test type\",\n    \"upc\": \"12345676\",\n    \"price\": 99.99,\n    \"description\": \"This is a placeholder request for creating a new product.\",\n    \"model\": \"NP12345\",\n    \"updatedAt\": \"2019-03-17T21:51:35.173Z\",\n    \"createdAt\": \"2019-03-17T21:51:35.173Z\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing requred paramater",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid price format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "63d12d9f-2505-4d4b-b138-b0a423def14b",
+										"exec": [
+											"pm.test(\"Invalid price format\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400)",
+											"    ;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 9999687,\n    \"name\": \"Test product\",\n    \"type\": \"Test type\",\n    \"upc\": \"12345676\",\n    \"price\": 99.999,\n    \"description\": \"This is a placeholder request for creating a new product.\",\n    \"model\": \"NP12345\",\n    \"updatedAt\": \"2019-03-17T21:51:35.173Z\",\n    \"createdAt\": \"2019-03-17T21:51:35.173Z\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3030/products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3030",
+									"path": [
+										"products",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "Folder for products"
+		},
+		{
+			"name": "healthcheck",
+			"item": [
+				{
+					"name": "",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "71e8c9d3-2ed1-477c-85e3-b19bdce5ac66",
+								"exec": [
+									"pm.test(\"response should be okay to process\", function () { ",
+									"    pm.response.to.be.ok; ",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.not.have.jsonBody(\"error\"); ",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Uptime > 0\", function () {",
+									"    pm.expect(pm.response.json().uptime).to.be.above(0)",
+									"    ;",
+									"});",
+									"",
+									"pm.test(\"Products, stores and categories are not empty\", function () {",
+									"    pm.expect(pm.response.json().documents.products).to.be.above(0);",
+									"    pm.expect(pm.response.json().documents.stores).to.be.above(0);",
+									"    pm.expect(pm.response.json().documents.categories).to.be.above(0)",
+									"    ;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3030/healthcheck",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"healthcheck"
+							]
+						},
+						"description": "Returns healthcheck information about the system"
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for healthcheck"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c396a478-2492-4c1c-b2a5-1c12f3f43179",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2813e2a0-fec6-43e7-97d5-795772f84bc1",
+				"type": "text/javascript",
+				"exec": [
+					"",
+					""
+				]
+			}
+		}
+	]
+}
