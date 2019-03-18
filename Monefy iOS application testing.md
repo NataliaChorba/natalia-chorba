@@ -80,7 +80,7 @@
 ## Beta-testing
 * Exploratory black box testing from non-stakeholders
 
-##F unctional testing
+## Functional testing
 
 ### Balance
 #### Change balance
